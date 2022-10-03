@@ -1,5 +1,7 @@
 import string
 
+from ListaConfiguracion import ListarObjetos
+
 class Nodo():
     def __init__ (self,dato=None,sig=None):
         self.dato=dato
@@ -42,6 +44,43 @@ class Lista():
         self.head=None
 
         print("YA SE LIMPIO")
+    def EscritoriosActivos(self,idempresa,idpunto):
+        listaactivos=[]
+        tmp=self.head
+        while tmp is not None:
+            if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
+                if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
+                    tmp2=tmp.dato.EscritoriosActicos.head
+                    while tmp2!=None:
+                        activos=tmp2.dato.ideEscritorioActivo
+                        listaactivos.append(activos)
+                        tmp2=tmp2.sig
+                    return listaactivos
+                    print("Activos: ",activos)
+                tmp=tmp.sig
+            tmp=tmp.sig
+    def ClientesEspera(self,idempresa,idpunto):
+        tmp=self.head
+        contar=0
+        while tmp is not None:
+            if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
+                if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
+                    tmp2=tmp.dato.FilaClientes.head
+                    while tmp2!=None:
+                        activos=tmp2.dato.dpiCliente
+                        #print(activos)
+                        contar+=1
+                        tmp2=tmp2.sig
+                    
+                tmp=tmp.sig
+                print("Clientes en espera: ",contar)
+                break;
+            tmp=tmp.sig
+        return None
+
+        
+ 
+
 
 
 

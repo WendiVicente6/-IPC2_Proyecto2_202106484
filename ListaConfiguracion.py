@@ -1,3 +1,6 @@
+from itertools import tee
+
+
 class Company:
     def __init__(self,id=None, name=None, abbreviation=None):
         self.id = id;
@@ -52,18 +55,42 @@ class ListarObjetos:
         self.last=None
     def getEmpresa(self,empresa,punto):
         tmp=self.first
+        
+        
         while tmp is not None:
             if tmp.object.name.strip()==empresa:
-                if tmp.object.service_points.first.object.name.strip()==punto:
-                    return tmp
-                return tmp
+                tmp2=tmp.object.service_points.first
+                while tmp2 is not None:
+                    if tmp2.object.name.strip()==punto:
+                        return tmp,tmp2
+                    tmp2=tmp2.next
+                
             tmp=tmp.next
         return None
-    def getPunto(self,punto):
-        tmp=self.first.object.service_points.first
+    def EscritoriosInactivos(self,empresa,punto,listactivos):
+        tmp=self.first
+        contar=0
+        
+        
         while tmp is not None:
-            if tmp.name.strip()==punto:
-                return tmp
+            if tmp.object.id.strip()==empresa:
+                tmp2=tmp.object.service_points.first
+                while tmp2 is not None:
+                    if tmp2.object.id.strip()==punto:
+                        tmp3=tmp2.object.desks.first
+                        while tmp3 is not None:
+                            if tmp3.object.id.strip() in listactivos:
+                                tmp3=tmp3.next
+                            else:
+                                inactivo=tmp3.object.id
+                                contar+=1
+                                print("Inactivos: ",contar)
+                                tmp3=tmp3.next
+                        
+
+                        #return tmp,tmp2
+                    tmp2=tmp2.next
+                
             tmp=tmp.next
         return None
 
@@ -72,8 +99,10 @@ class ListarObjetos:
     def Show(self):
         temporal = self.first;
         if (self.size != 0):
+            if(temporal==None):
+                print("No hay datos")
             
-            if (type(temporal.object) == Company):
+            elif (type(temporal.object) == Company):
                 print("EMPRESA"+"="*65);
                 while (temporal != None):
                     print("|{:<10}|{:<30}|{:<30}|".format(temporal.object.id,temporal.object.name,temporal.object.abbreviation));

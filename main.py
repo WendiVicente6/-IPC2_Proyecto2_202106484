@@ -41,7 +41,7 @@ def LeerXmlPruebas(file,listaIniciaPrograma):
                 temporalTransaacionC=TransaccionesCliente(idtransaccionConfiguracion,cantidad)
                 temporalCliente.transaccionesARealizar.AgregarInicio(temporalTransaacionC)
             listaIniciaPrograma.AgregarInicio(temporalConfig)
-    ImprimePruebaDeSistema(listaIniciaPrograma)
+    #ImprimePruebaDeSistema(listaIniciaPrograma)
 
 def ImprimePruebaDeSistema(listaIniciaPrograma):
 
@@ -87,7 +87,7 @@ def CargarArchivoConfiguracion(file, xmlconfiguracion):
     for company in root:
         xmlconfiguracion.Insert_End(Return_Company(company));
 
-    xmlconfiguracion.Show(); 
+    #xmlconfiguracion.Show(); 
 def Return_Company(company):
     aux_id_company = "";
     aux_name_company = "";
@@ -249,6 +249,8 @@ def Menu():
 3. Limpiar Sistema
 4. Crear nueva empresa
 5. Realizar Operaciones
+
+
         """)
 
         opcion = input("Ingrese una opcion: ")
@@ -266,7 +268,7 @@ def Menu():
             
         elif opcion == '3':
             listaconfi.Eliminar()
-        
+            listaconfi.Show()
         elif opcion == '4':
             listaconfi.Insert_End(Return_Company_individual())
             listaconfi.Show()
@@ -274,11 +276,21 @@ def Menu():
 
         
         elif opcion == '5':
+            contar=0
+            listaactivos=[]
             empresa=input("Ingrese nombre de la empresa: ")
            
             punto=input("Ingrese punto de atención: ")
-            empr=listaconfi.getEmpresa(empresa,punto)
-            print(empr.object.id,empr.object.service_points.first.object.id)
+            (empr,pun)=listaconfi.getEmpresa(empresa,punto)
+            print("ID de la empresa Elegido: ",empr.object.id,"ID del punto de servicio elegido: ",pun.object.id)
+            listaactivos=listaIniciaPrograma.EscritoriosActivos(empr.object.id,pun.object.id)
+            for activos in range(len(listaactivos)):
+                contar+=1
+            print("Activos: ",contar)
+            listainactivos=listaconfi.EscritoriosInactivos(empr.object.id,pun.object.id,listaactivos)
+            listaIniciaPrograma.ClientesEspera(empr.object.id,pun.object.id)
+            
+
         elif opcion != '6':
             print("Opcion incorrecta\n")
 
