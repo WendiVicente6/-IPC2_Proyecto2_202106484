@@ -106,8 +106,9 @@ def Menu():
     while opcion != '6':
         print("")
         print("""Menú principal:
-1. Cargar Archivo de Configuración
-2. Cargar Archivo Inicial
+1. Cargar archivo de configuración del sistema
+2. Limpiar Sistema
+3. Crear nueva empresa
         """)
 
         opcion = input("Ingrese una opcion: ")
@@ -118,10 +119,50 @@ def Menu():
             CargarArchivoConfiguracion(file,listaconfi)
             
         elif opcion == '2':
-            pass
+            listaconfi.Eliminar()
         
         elif opcion == '3':
-            pass        
+            idempresa=input("Ingrese ID de la nueva empresa: ")
+            nombre=input("Ingrese nombre de la nueva empresa: ")
+            abreviatura=input("Ingrese abreviatura de la nueva empresa: ")
+
+            datosPuntos=input('Desea agregar puntos de atención? (S/N):')
+            if datosPuntos=="S":
+                idpunto=input('Ingrese ID del punto de atención: ')
+                nombrepunto=input('Ingrese nombre del punto de atención: ')
+                direpunto=input('Ingrese Dirección del punto de atención: ')
+            else:
+                "No hya"
+            datosescritorios=input("Desea agregar escritorios(S/N): " )
+            if datosescritorios=="S":
+                idescritorio=input('Ingrese ID del escritorio: ')
+                identificacion=input('Ingrese nombre del escritorio: ')
+                encargado=input('Ingrese encargado del escritorio: ')
+            else:
+                "No hay"
+            datostransaccion=input("Desea agregar trasacciones(S/N): " )
+            if datostransaccion=="S":
+                idtran=input('Ingrese ID de la transaccion: ')
+                nombretran=input('Ingrese nombre de la transaccion: ')
+                tiempo=input('Ingrese tiempo de la transaccion: ')
+
+
+        
+            escritorios=Desk(idescritorio,identificacion,encargado)
+            listaconfi.Insert_End(escritorios)
+            puntosatención=Service_Point(idpunto,nombrepunto,direpunto)
+            puntosatención.desks=escritorios
+            listaconfi.Insert_End(puntosatención)
+            
+            transaccion=Transaction(idtran,nombretran,tiempo)
+            listaconfi.Insert_End(transaccion)
+            empresa=Company(idempresa,nombre,abreviatura) 
+            empresa.transactions=transaccion
+            empresa.service_points=puntosatención
+            listaconfi.Insert_End(empresa)
+ 
+            
+            listaconfi.Show()    
         elif opcion == '4':
             pass
         

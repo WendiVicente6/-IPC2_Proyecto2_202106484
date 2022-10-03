@@ -47,6 +47,10 @@ class ListarObjetos:
             nuevo.previous = self.last;
             self.last = nuevo;
         self.size +=1;
+    def Eliminar(self):
+        self.first=None
+        self.last=None
+
     
     def Show(self):
         temporal = self.first;
