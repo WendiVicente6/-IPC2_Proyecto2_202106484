@@ -1,3 +1,4 @@
+from turtle import pu
 import xml.etree.ElementTree as ET
 from ListaClientes import Clientes, Configuracion, EscritorioActivo, Lista, TransaccionesCliente
 from ListaConfiguracion import Company, Desk, ListarObjetos, Service_Point, Transaction
@@ -247,6 +248,7 @@ def Menu():
 2. Cargar archivo de configuración del sistema
 3. Limpiar Sistema
 4. Crear nueva empresa
+5. Realizar Operaciones
         """)
 
         opcion = input("Ingrese una opcion: ")
@@ -272,7 +274,11 @@ def Menu():
 
         
         elif opcion == '5':
-            pass
+            empresa=input("Ingrese nombre de la empresa: ")
+           
+            punto=input("Ingrese punto de atención: ")
+            empr=listaconfi.getEmpresa(empresa,punto)
+            print(empr.object.id,empr.object.service_points.first.object.id)
         elif opcion != '6':
             print("Opcion incorrecta\n")
 

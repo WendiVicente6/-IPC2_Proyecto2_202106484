@@ -50,6 +50,23 @@ class ListarObjetos:
     def Eliminar(self):
         self.first=None
         self.last=None
+    def getEmpresa(self,empresa,punto):
+        tmp=self.first
+        while tmp is not None:
+            if tmp.object.name.strip()==empresa:
+                if tmp.object.service_points.first.object.name.strip()==punto:
+                    return tmp
+                return tmp
+            tmp=tmp.next
+        return None
+    def getPunto(self,punto):
+        tmp=self.first.object.service_points.first
+        while tmp is not None:
+            if tmp.name.strip()==punto:
+                return tmp
+            tmp=tmp.next
+        return None
+
 
     
     def Show(self):

@@ -46,9 +46,7 @@ class Lista():
 
 
 class Clientes():         #---------------------------------------------------------------TRATAR COMO COLA
-    dpiCliente:int
-    nombreCliente:string
-    transaccionesARealizar:Lista
+
     def __init__(self,dpiCliente,nombreCliente):
         self.dpiCliente=dpiCliente
         self.nombreCliente=nombreCliente
@@ -57,8 +55,6 @@ class Clientes():         #-----------------------------------------------------
 
 
 class TransaccionesCliente():
-        ideTransaccionARealizar:int
-        nveces:int
         def __init__(self,ideTransaccionARealizar,nveces):
             self.ideTransaccionARealizar=ideTransaccionARealizar
             self.nveces=nveces
@@ -73,7 +69,6 @@ class Configuracion():
         self.FilaClientes=Lista()
 
 class EscritorioActivo():
-    ideEscritorioActivo:int
 
     def __init__(self,ideEscritorioActivo):
         self.ideEscritorioActivo=ideEscritorioActivo
