@@ -1,5 +1,83 @@
 import xml.etree.ElementTree as ET
+from ListaClientes import Clientes, Configuracion, EscritorioActivo, Lista, TransaccionesCliente
 from ListaConfiguracion import Company, Desk, ListarObjetos, Service_Point, Transaction
+from xml.dom import minidom
+
+
+
+def LeerXmlPruebas(file,listaIniciaPrograma):
+
+    archivoLeido =minidom.parse(file)
+    PruebaInicial= archivoLeido.getElementsByTagName('configInicial')
+    
+    for configInicial in PruebaInicial:
+        idConfiguracion=configInicial.getAttribute('id')
+        ideEmpresaConfiguracion=configInicial.getAttribute('idEmpresa')
+        idPuntoConfiguracion=configInicial.getAttribute('idPunto')
+        #print(idConfiguracion,ideEmpresaConfiguracion,idPuntoConfiguracion)
+        temporalConfig=Configuracion(idConfiguracion,ideEmpresaConfiguracion,idPuntoConfiguracion)
+        listaEscritoriosConfiguracion=configInicial.getElementsByTagName('escritorio')
+
+        for escritorio in listaEscritoriosConfiguracion:
+            ideEscritorioConfiguracion=escritorio.getAttribute('idEscritorio')  
+            #print(ideEscritorioConfiguracion)
+            tempEscritoriosActivos=EscritorioActivo(ideEscritorioConfiguracion)
+            temporalConfig.EscritoriosActicos.AgregarInicio(tempEscritoriosActivos)
+            listadoClientes=configInicial.getElementsByTagName('cliente')       
+        
+        for cliente in listadoClientes:
+            dpi=cliente.getAttribute('dpi')
+            nombre=cliente.getElementsByTagName('nombre')[0].childNodes[0].nodeValue
+            #print(dpi,nombre)
+            temporalCliente=Clientes(dpi,nombre)
+            listadoTransacciones=cliente.getElementsByTagName('transaccion')
+            temporalConfig.FilaClientes.AgregarInicio(temporalCliente)
+        
+            for transaccion in listadoTransacciones:
+                idtransaccionConfiguracion=transaccion.getAttribute('idTransaccion')
+                cantidad=transaccion.getAttribute('cantidad')
+                #print(idtransaccionConfiguracion,cantidad)
+                temporalTransaacionC=TransaccionesCliente(idtransaccionConfiguracion,cantidad)
+                temporalCliente.transaccionesARealizar.AgregarInicio(temporalTransaacionC)
+            listaIniciaPrograma.AgregarInicio(temporalConfig)
+    ImprimePruebaDeSistema(listaIniciaPrograma)
+
+def ImprimePruebaDeSistema(listaIniciaPrograma):
+
+    temp1=listaIniciaPrograma.head
+    print("????????????????????????????????????????????????????????????????????????????????????")
+    while temp1 != None:
+        print("----------------------------CONFIGURACIÓN--------------------------------")
+        print('CODIGO: ',temp1.dato.codigoConfiguracion)
+        print('ID EMPRESA: ',temp1.dato.ideEmpresaConfiguracion)
+        print('ID ATENCION: ',temp1.dato.idePuntoDEAtencionConfiguracion)
+        lEsciroeiosA=temp1.dato.EscritoriosActicos
+        temp2=lEsciroeiosA.head
+        print("         Escritorios Activos------------------------")        
+        while temp2!=None:
+            
+            print('         ID: ',temp2.dato.ideEscritorioActivo)
+            lC=temp1.dato.FilaClientes
+            temp3=lC.head
+            temp2=temp2.sig
+        
+        while temp3!=None:
+            print("         CLIENTE--------------------------------")
+            print('             DPI: ',temp3.dato.dpiCliente)
+            print('             NOMBRE: ',temp3.dato.nombreCliente)
+
+            
+            ltR=temp3.dato.transaccionesARealizar
+            temp4=ltR.head
+           
+            print("             TRANSACCIONES DEL CLIENTE-----------------------------")
+            while temp4!=None:
+                
+
+                print('             ID TRANSACCION: ',temp4.dato.ideTransaccionARealizar,'  A REALIZAR : ' ,temp4.dato.nveces,'  VECES')
+                temp4=temp4.sig   
+            temp3=temp3.sig    
+            temp1=temp1.sig   
 
 
 def CargarArchivoConfiguracion(file, xmlconfiguracion):
@@ -160,13 +238,15 @@ def Menu():
     
     opcion = ''
     listaconfi=ListarObjetos()
+    listaIniciaPrograma=Lista()
     print("""----------------------------PROYECTO NO. 2 ------------------------------""")
     while opcion != '6':
         print("")
         print("""Menú principal:
 1. Cargar archivo de configuración del sistema
-2. Limpiar Sistema
-3. Crear nueva empresa
+2. Cargar archivo de configuración del sistema
+3. Limpiar Sistema
+4. Crear nueva empresa
         """)
 
         opcion = input("Ingrese una opcion: ")
@@ -175,17 +255,21 @@ def Menu():
             filename = input("Ingrese el archivo: ")
             file = './' + filename
             CargarArchivoConfiguracion(file,listaconfi)
-            
+               
         elif opcion == '2':
+            filename = input("Ingrese el archivo: ")
+            file = './' + filename
+
+            LeerXmlPruebas(file,listaIniciaPrograma)
+            
+        elif opcion == '3':
             listaconfi.Eliminar()
         
-        elif opcion == '3':
+        elif opcion == '4':
             listaconfi.Insert_End(Return_Company_individual())
             listaconfi.Show()
 
-   
-        elif opcion == '4':
-            pass
+
         
         elif opcion == '5':
             pass
