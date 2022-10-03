@@ -31,6 +31,64 @@ def Return_Company(company):
     aux_company.transactions = aux_transaction;
     
     return aux_company;
+
+def Return_Company_individual():
+    aux_service_point:ListarObjetos = None;
+    idempresa=input("Ingrese ID de la nueva empresa: ")
+    nombre=input("Ingrese nombre de la nueva empresa: ")
+    abreviatura=input("Ingrese abreviatura de la nueva empresa: ")
+    aux_service_point = Return_List_individual(1);
+
+    aux_transaction = Return_List_individual(2);
+            
+    aux_company = Company(idempresa,nombre,abreviatura);
+    aux_company.service_points = aux_service_point;
+    aux_company.transactions = aux_transaction;
+    
+    return aux_company;
+
+def Return_List_individual(status):
+
+    if (status == 1):
+        aux_list = ListarObjetos();
+
+        aux_list_desks: ListarObjetos = None;
+
+        idpunto=input('Ingrese ID del punto de atención: ')
+        nombrepunto=input('Ingrese nombre del punto de atención: ')
+        direpunto=input('Ingrese Dirección del punto de atención: ')
+
+        aux_list_desks = Return_List_individual(3);
+            
+                
+        aux_service_point = Service_Point(idpunto,nombrepunto,direpunto);
+        aux_service_point.desks = aux_list_desks;
+        aux_list.Insert_End(aux_service_point);
+
+        return aux_list;
+    
+    elif (status == 2):
+        aux_list = ListarObjetos();
+        idtran=input('Ingrese ID de la transaccion: ')
+        nombretran=input('Ingrese nombre de la transaccion: ')
+        tiempo=input('Ingrese tiempo de la transaccion: ')
+            
+        aux_transaction = Transaction(idtran,nombretran,tiempo);
+        aux_list.Insert_End(aux_transaction);
+
+        return aux_list;
+
+    elif (status == 3):
+        aux_list = ListarObjetos();
+
+        idescritorio=input('Ingrese ID del escritorio: ')
+        identificacion=input('Ingrese nombre del escritorio: ')
+        encargado=input('Ingrese encargado del escritorio: ')
+                
+        aux_desks = Desk(idescritorio,identificacion,encargado);
+        aux_list.Insert_End(aux_desks);
+
+        return aux_list;    
 def Return_List(root,status):
 
     if (status == 1):
@@ -122,47 +180,10 @@ def Menu():
             listaconfi.Eliminar()
         
         elif opcion == '3':
-            idempresa=input("Ingrese ID de la nueva empresa: ")
-            nombre=input("Ingrese nombre de la nueva empresa: ")
-            abreviatura=input("Ingrese abreviatura de la nueva empresa: ")
+            listaconfi.Insert_End(Return_Company_individual())
+            listaconfi.Show()
 
-            datosPuntos=input('Desea agregar puntos de atención? (S/N):')
-            if datosPuntos=="S":
-                idpunto=input('Ingrese ID del punto de atención: ')
-                nombrepunto=input('Ingrese nombre del punto de atención: ')
-                direpunto=input('Ingrese Dirección del punto de atención: ')
-            else:
-                "No hya"
-            datosescritorios=input("Desea agregar escritorios(S/N): " )
-            if datosescritorios=="S":
-                idescritorio=input('Ingrese ID del escritorio: ')
-                identificacion=input('Ingrese nombre del escritorio: ')
-                encargado=input('Ingrese encargado del escritorio: ')
-            else:
-                "No hay"
-            datostransaccion=input("Desea agregar trasacciones(S/N): " )
-            if datostransaccion=="S":
-                idtran=input('Ingrese ID de la transaccion: ')
-                nombretran=input('Ingrese nombre de la transaccion: ')
-                tiempo=input('Ingrese tiempo de la transaccion: ')
-
-
-        
-            escritorios=Desk(idescritorio,identificacion,encargado)
-            listaconfi.Insert_End(escritorios)
-            puntosatención=Service_Point(idpunto,nombrepunto,direpunto)
-            puntosatención.desks=escritorios
-            listaconfi.Insert_End(puntosatención)
-            
-            transaccion=Transaction(idtran,nombretran,tiempo)
-            listaconfi.Insert_End(transaccion)
-            empresa=Company(idempresa,nombre,abreviatura) 
-            empresa.transactions=transaccion
-            empresa.service_points=puntosatención
-            listaconfi.Insert_End(empresa)
- 
-            
-            listaconfi.Show()    
+   
         elif opcion == '4':
             pass
         
