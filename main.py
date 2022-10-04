@@ -32,16 +32,16 @@ def LeerXmlPruebas(file,listaIniciaPrograma):
             #print(dpi,nombre)
             temporalCliente=Clientes(dpi,nombre)
             listadoTransacciones=cliente.getElementsByTagName('transaccion')
-            temporalConfig.FilaClientes.AgregarInicio(temporalCliente)
+            temporalConfig.FilaClientes.AgregarFinal(temporalCliente)
         
             for transaccion in listadoTransacciones:
                 idtransaccionConfiguracion=transaccion.getAttribute('idTransaccion')
                 cantidad=transaccion.getAttribute('cantidad')
                 #print(idtransaccionConfiguracion,cantidad)
                 temporalTransaacionC=TransaccionesCliente(idtransaccionConfiguracion,cantidad)
-                temporalCliente.transaccionesARealizar.AgregarInicio(temporalTransaacionC)
-            listaIniciaPrograma.AgregarInicio(temporalConfig)
-    #ImprimePruebaDeSistema(listaIniciaPrograma)
+                temporalCliente.transaccionesARealizar.AgregarFinal(temporalTransaacionC)
+            listaIniciaPrograma.AgregarFinal(temporalConfig)
+    ImprimePruebaDeSistema(listaIniciaPrograma)
 
 def ImprimePruebaDeSistema(listaIniciaPrograma):
 
@@ -87,7 +87,7 @@ def CargarArchivoConfiguracion(file, xmlconfiguracion):
     for company in root:
         xmlconfiguracion.Insert_End(Return_Company(company));
 
-    #xmlconfiguracion.Show(); 
+    xmlconfiguracion.Show(); 
 def Return_Company(company):
     aux_id_company = "";
     aux_name_company = "";
@@ -233,7 +233,9 @@ def Return_List(root,status):
             aux_desks = Desk(aux_id,aux_name,aux_address);
             aux_list.Insert_End(aux_desks);
 
-        return aux_list;        
+        return aux_list;   
+
+
 def Menu():
     print("")
     
@@ -295,12 +297,18 @@ def Menu():
             pregunta=input("Desea Activar algun escritorio: (S/N) ")
             if pregunta=="S":
                 idescritorio=input("Ingrese ID de escritorio: ")
-                listaconfi.ActivarInactivos(empr.object.id,pun.object.id,activos,idescritorio)
+                listaIniciaPrograma.ActivarEscritorio(empr.object.id,pun.object.id,idescritorio)
+                #listaconfi.ActivarInactivos(empr.object.id,pun.object.id,activos,idescritorio)
+                listaIniciaPrograma.MostrarActivos(empr.object.id,pun.object.id)
             pregunta2=input("Desea Desactivar algun escritorio: (S/N) ")
             if pregunta2=="S":
                 idescritorio2=input("Ingrese ID de escritorio: ")
-                listaconfi.DesactivarEscritorio(empr.object.id,pun.object.id,activos,idescritorio2)
+                listaIniciaPrograma.DesactivarEscritorio(empr.object.id,pun.object.id,idescritorio2)
+                #listaconfi.DesactivarEscritorio(empr.object.id,pun.object.id,activos,idescritorio2)
+                listaIniciaPrograma.MostrarActivos(empr.object.id,pun.object.id)
 
+            #listaconfi.Show()
+            ImprimePruebaDeSistema(listaIniciaPrograma)
 
 
            

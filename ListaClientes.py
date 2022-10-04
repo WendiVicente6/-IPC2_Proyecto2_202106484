@@ -1,4 +1,6 @@
+from ast import Return
 import string
+from typing_extensions import Self
 
 
 
@@ -43,8 +45,67 @@ class Lista():
   
     def Limpiar(self):
         self.head=None
-
         print("YA SE LIMPIO")
+    def getConfiguracion(self,idempresa,idpunto):
+        tmp=self.head
+        while tmp is not None:
+            if tmp.dato.ideEmpresaConfiguracion==idempresa and tmp.dato.idePuntoDEAtencionConfiguracion==idpunto:
+                return tmp
+            tmp=tmp.sig
+        return None
+
+    def MostrarActivos(self,idempresa,idpunto):
+        tmp=self.head
+        
+        while tmp is not None:
+            if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
+                if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
+                    tmp2=tmp.dato.EscritoriosActicos.head
+                    while tmp2 is not None:
+                        print("ESCRITORIO: ",tmp2.dato.ideEscritorioActivo)
+                        tmp2=tmp2.sig
+                    return
+                tmp=tmp.sig
+            tmp=tmp.sig
+    def DesactivarEscritorio(self,idempresa,idpunto,idescritorio):
+        tmp=self.head
+        
+        while tmp is not None:
+            if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
+                if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
+                    tmp2=tmp.dato.EscritoriosActicos.head
+                    while tmp2 is not None:
+                        if tmp2.dato.ideEscritorioActivo==idescritorio:
+                            self.head=tmp2.sig
+                            tmp2.sig=None
+                            print('Escritorio ',tmp2.dato.ideEscritorioActivo,' fue desactivado')
+                            break
+                        elif tmp2.sig is not None:
+                            if tmp2.sig.dato.ideEscritorioActivo==idescritorio:
+                                nodo_a_borrar=tmp2.sig
+                                tmp2.sig=nodo_a_borrar.sig
+                                nodo_a_borrar.sig=None
+                                print('Escritorio ',idescritorio,' fue desactivado')
+                                break
+                        tmp2=tmp2.sig
+                    return
+                tmp=tmp.sig
+            tmp=tmp.sig
+
+    def ActivarEscritorio(self,idempresa,idpunto,idescritorio):
+        contar=0
+        tmp=self.head
+        while tmp is not None:
+            if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
+                if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
+                    idconfig=self.getConfiguracion(idempresa,idpunto)
+                    tempEscritoriosActivos=EscritorioActivo(idescritorio)
+                    idconfig.dato.EscritoriosActicos.AgregarFinal(tempEscritoriosActivos)
+                    return
+
+                tmp=tmp.sig
+            tmp=tmp.sig
+
     def EscritoriosActivos(self,idempresa,idpunto):
         contar=0
         tmp=self.head
