@@ -277,18 +277,33 @@ def Menu():
         
         elif opcion == '5':
             contar=0
-            listaactivos=[]
+            activos=[]
+            transacciones=[]
             empresa=input("Ingrese nombre de la empresa: ")
            
             punto=input("Ingrese punto de atención: ")
             (empr,pun)=listaconfi.getEmpresa(empresa,punto)
             print("ID de la empresa Elegido: ",empr.object.id,"ID del punto de servicio elegido: ",pun.object.id)
-            listaactivos=listaIniciaPrograma.EscritoriosActivos(empr.object.id,pun.object.id)
-            for activos in range(len(listaactivos)):
-                contar+=1
-            print("Activos: ",contar)
-            listainactivos=listaconfi.EscritoriosInactivos(empr.object.id,pun.object.id,listaactivos)
+
+             
+            activos=listaIniciaPrograma.EscritoriosActivos(empr.object.id,pun.object.id)
+            
+            listaconfi.EscritoriosInactivos(empr.object.id,pun.object.id,activos)
             listaIniciaPrograma.ClientesEspera(empr.object.id,pun.object.id)
+            transacciones=listaIniciaPrograma.CantidadTransacciones(empr.object.id,pun.object.id)
+            listaconfi.CalcularTiempoPromedio(empr.object.id,transacciones)
+            pregunta=input("Desea Activar algun escritorio: (S/N) ")
+            if pregunta=="S":
+                idescritorio=input("Ingrese ID de escritorio: ")
+                listaconfi.ActivarInactivos(empr.object.id,pun.object.id,activos,idescritorio)
+            pregunta2=input("Desea Desactivar algun escritorio: (S/N) ")
+            if pregunta2=="S":
+                idescritorio2=input("Ingrese ID de escritorio: ")
+                listaconfi.DesactivarEscritorio(empr.object.id,pun.object.id,activos,idescritorio2)
+
+
+
+           
             
 
         elif opcion != '6':

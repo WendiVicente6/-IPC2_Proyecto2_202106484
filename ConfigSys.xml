@@ -106,6 +106,10 @@
                   <identificacion> L444 </identificacion>
                   <encargado> El bicho siuuu </encargado>
                </escritorio>
+               <escritorio id="PRUEBA"> 
+                  <identificacion> L444 </identificacion>
+                  <encargado> El bicho siuuu </encargado>
+               </escritorio>
             </listaEscritorios>
          </puntoAtencion>
       </listaPuntosAtencion>

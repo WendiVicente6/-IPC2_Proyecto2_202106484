@@ -1,6 +1,7 @@
 import string
 
-from ListaConfiguracion import ListarObjetos
+
+
 
 class Nodo():
     def __init__ (self,dato=None,sig=None):
@@ -45,8 +46,9 @@ class Lista():
 
         print("YA SE LIMPIO")
     def EscritoriosActivos(self,idempresa,idpunto):
-        listaactivos=[]
+        contar=0
         tmp=self.head
+        listaactivos=[]
         while tmp is not None:
             if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
                 if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
@@ -54,9 +56,11 @@ class Lista():
                     while tmp2!=None:
                         activos=tmp2.dato.ideEscritorioActivo
                         listaactivos.append(activos)
+                        contar+=1
                         tmp2=tmp2.sig
+                    print("Activos: ",contar)
                     return listaactivos
-                    print("Activos: ",activos)
+                    
                 tmp=tmp.sig
             tmp=tmp.sig
     def ClientesEspera(self,idempresa,idpunto):
@@ -72,11 +76,38 @@ class Lista():
                         contar+=1
                         tmp2=tmp2.sig
                     
+                    
                 tmp=tmp.sig
                 print("Clientes en espera: ",contar)
                 break;
             tmp=tmp.sig
         return None
+    
+    def CantidadTransacciones(self,idempresa,idpunto):
+        tmp=self.head
+        contar=0
+        transacciones=[]
+        while tmp is not None:
+            if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
+                if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
+                    tmp2=tmp.dato.FilaClientes.head
+                    while tmp2!=None:
+                        tmp3=tmp2.dato.transaccionesARealizar.head
+                        while tmp3!=None:
+                            transa=tmp3.dato.ideTransaccionARealizar
+                            cantidad=tmp3.dato.nveces
+                            #print(activos)
+                            transacciones.append([transa,cantidad])
+                            tmp3=tmp3.sig
+                        tmp2=tmp2.sig
+                    return transacciones
+                    
+                tmp=tmp.sig
+                #return transa,cantidad
+                break;
+            tmp=tmp.sig
+        return None
+
 
         
  
