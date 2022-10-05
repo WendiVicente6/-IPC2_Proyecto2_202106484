@@ -23,7 +23,7 @@ def LeerXmlPruebas(file,listaIniciaPrograma):
             ideEscritorioConfiguracion=escritorio.getAttribute('idEscritorio')  
             #print(ideEscritorioConfiguracion)
             tempEscritoriosActivos=EscritorioActivo(ideEscritorioConfiguracion)
-            temporalConfig.EscritoriosActicos.AgregarInicio(tempEscritoriosActivos)
+            temporalConfig.EscritoriosActicos.AgregarFinal(tempEscritoriosActivos)
             listadoClientes=configInicial.getElementsByTagName('cliente')       
         
         for cliente in listadoClientes:
@@ -251,6 +251,7 @@ def Menu():
 3. Limpiar Sistema
 4. Crear nueva empresa
 5. Realizar Operaciones
+6. Graficara 1
 
 
         """)
@@ -302,19 +303,28 @@ def Menu():
                 listaIniciaPrograma.MostrarActivos(empr.object.id,pun.object.id)
             pregunta2=input("Desea Desactivar algun escritorio: (S/N) ")
             if pregunta2=="S":
-                idescritorio2=input("Ingrese ID de escritorio: ")
-                listaIniciaPrograma.DesactivarEscritorio(empr.object.id,pun.object.id,idescritorio2)
-                #listaconfi.DesactivarEscritorio(empr.object.id,pun.object.id,activos,idescritorio2)
+                listaIniciaPrograma.DesactivarEscritorio(empr.object.id,pun.object.id)
                 listaIniciaPrograma.MostrarActivos(empr.object.id,pun.object.id)
 
             #listaconfi.Show()
-            ImprimePruebaDeSistema(listaIniciaPrograma)
+            atender=input("Desea Empezar a atender Clientes: (S/N) ")
+            if atender=="S":
+                listaIniciaPrograma.Atender(empr.object.id,pun.object.id)
+                listaIniciaPrograma.ClientesFaltantes(empr.object.id,pun.object.id)
+            #ImprimePruebaDeSistema(listaIniciaPrograma)
+            solicitud=input("Desea ingresar un nuevo cliente: (S/N) ")
+            if solicitud=="S":
+                listaconfi.MostrarTransacciones(empr.object.id,pun.object.id)
+                listaIniciaPrograma.MeterCliente(empr.object.id,pun.object.id)
+                listaIniciaPrograma.ClientesFaltantes(empr.object.id,pun.object.id)
 
 
-           
-            
+        elif opcion == '6':
+            idemmpresa=input("Ingrese ID de la empresa: ")
+            idpunto=input("Ingrese punto de la empresa: ")
+            listaIniciaPrograma.graficar(idemmpresa,idpunto)
 
-        elif opcion != '6':
+        elif opcion != '7':
             print("Opcion incorrecta\n")
 
 if __name__ == '__main__':

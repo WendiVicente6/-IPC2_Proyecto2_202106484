@@ -1,0 +1,28 @@
+graph G { 
+Node0[dir=both shape=box label=" Arturito 
+2933151161111
+ COCA Cantidad: 1
+"];
+Node1[dir=both shape=box label=" Bill Gates 
+2933151162222
+ CASE Cantidad: 1
+"];
+Node0 -- Node1;
+Node2[dir=both shape=box label=" Dante 
+2933151163333
+ PAME Cantidad: 1
+ COPR Cantidad: 1
+"];
+Node1 -- Node2;
+Node3[dir=both shape=box label=" Freddie Mercuri 
+2933151164444
+ COCA Cantidad: 1
+ COPR Cantidad: 3
+"];
+Node2 -- Node3;
+Node4[dir=both shape=box label=" Henry Ford 
+29331511655555
+ COCA Cantidad: 1
+"];
+Node3 -- Node4;
+}

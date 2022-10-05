@@ -1,4 +1,5 @@
 from ast import Return
+import os
 import string
 from typing_extensions import Self
 
@@ -46,6 +47,7 @@ class Lista():
     def Limpiar(self):
         self.head=None
         print("YA SE LIMPIO")
+   
     def getConfiguracion(self,idempresa,idpunto):
         tmp=self.head
         while tmp is not None:
@@ -54,6 +56,27 @@ class Lista():
             tmp=tmp.sig
         return None
 
+    def MeterCliente(self,idempresa,idpunto):
+            contar=0
+            dpi=input("DPI: ")
+            nombre=input("Nombre: ")
+            tmp=self.head
+            while tmp is not None:
+                if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
+                    if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
+                        idtrans=input("Ingrese ID de transaccion a realizar: ")
+                        cantrans=input("Ingrese Cantidad de transaccion: ")
+                        idconfig=self.getConfiguracion(idempresa,idpunto)
+                        ClienteNuevo=Clientes(dpi,nombre)
+                        idconfig.dato.FilaClientes.AgregarFinal(ClienteNuevo)
+
+                        Transacciones=TransaccionesCliente(idtrans,cantrans)
+                        ClienteNuevo.transaccionesARealizar.AgregarFinal(Transacciones)
+
+                        return
+
+                    tmp=tmp.sig
+                tmp=tmp.sig
     def MostrarActivos(self,idempresa,idpunto):
         tmp=self.head
         
@@ -61,33 +84,43 @@ class Lista():
             if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
                 if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
                     tmp2=tmp.dato.EscritoriosActicos.head
+                    
                     while tmp2 is not None:
                         print("ESCRITORIO: ",tmp2.dato.ideEscritorioActivo)
                         tmp2=tmp2.sig
                     return
                 tmp=tmp.sig
             tmp=tmp.sig
-    def DesactivarEscritorio(self,idempresa,idpunto,idescritorio):
+    def ClientesFaltantes(self,idempresa,idpunto):
         tmp=self.head
         
         while tmp is not None:
             if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
                 if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
-                    tmp2=tmp.dato.EscritoriosActicos.head
+                    tmp2=tmp.dato.FilaClientes.head
+                    
                     while tmp2 is not None:
-                        if tmp2.dato.ideEscritorioActivo==idescritorio:
-                            self.head=tmp2.sig
-                            tmp2.sig=None
-                            print('Escritorio ',tmp2.dato.ideEscritorioActivo,' fue desactivado')
-                            break
-                        elif tmp2.sig is not None:
-                            if tmp2.sig.dato.ideEscritorioActivo==idescritorio:
-                                nodo_a_borrar=tmp2.sig
-                                tmp2.sig=nodo_a_borrar.sig
-                                nodo_a_borrar.sig=None
-                                print('Escritorio ',idescritorio,' fue desactivado')
-                                break
+                        print("Clientes: ",tmp2.dato.nombreCliente)
                         tmp2=tmp2.sig
+                    return
+                tmp=tmp.sig
+            tmp=tmp.sig
+
+    def DesactivarEscritorio(self,idempresa,idpunto):
+        tmp=self.head
+        
+        while tmp is not None:
+            if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
+                if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
+                    tmp2=tmp.dato.EscritoriosActicos
+
+                    while tmp2 is not None:
+                        escritorio=tmp2.head.dato.ideEscritorioActivo
+                        borrar=tmp2.head
+                        tmp2.head=tmp2.head.sig
+                        borrar=None                         
+                        print("El ",escritorio," fue desactivado")
+                        break
                     return
                 tmp=tmp.sig
             tmp=tmp.sig
@@ -100,7 +133,7 @@ class Lista():
                 if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
                     idconfig=self.getConfiguracion(idempresa,idpunto)
                     tempEscritoriosActivos=EscritorioActivo(idescritorio)
-                    idconfig.dato.EscritoriosActicos.AgregarFinal(tempEscritoriosActivos)
+                    idconfig.dato.EscritoriosActicos.AgregarInicio(tempEscritoriosActivos)
                     return
 
                 tmp=tmp.sig
@@ -124,6 +157,24 @@ class Lista():
                     
                 tmp=tmp.sig
             tmp=tmp.sig
+    def Atender(self,idempresa,idpunto):
+        contar=0
+        tmp=self.head
+        listaactivos=[]
+        while tmp is not None:
+            if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
+                if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
+                    tmp2=tmp.dato.FilaClientes
+                    while tmp2!=None:
+                        cliente=tmp2.head.dato.nombreCliente
+                        borrar=tmp2.head
+                        tmp2.head=tmp2.head.sig
+                        borrar=None
+                        print("El cliente: ",cliente," fue atendido")
+                        break
+                    return                 
+                tmp=tmp.sig
+            tmp=tmp.sig
     def ClientesEspera(self,idempresa,idpunto):
         tmp=self.head
         contar=0
@@ -136,8 +187,7 @@ class Lista():
                         #print(activos)
                         contar+=1
                         tmp2=tmp2.sig
-                    
-                    
+       
                 tmp=tmp.sig
                 print("Clientes en espera: ",contar)
                 break;
@@ -169,14 +219,41 @@ class Lista():
             tmp=tmp.sig
         return None
 
-
+    def graficar(self,idempresa,idpunto):
+        tmp=self.head
+        cont = 0
+        cadena = ""
         
- 
+        while tmp is not None:
+            if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
+                if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
+                    tmp2=tmp.dato.FilaClientes.head
+                    file = open('Cola.dot', 'w')
+                    cadena = cadena + 'graph G { \n'
+                    while tmp2 is not None:
+                        tmp3=tmp2.dato.transaccionesARealizar.head
+                        cadena = cadena + 'Node'+str(cont)+'[dir=both shape=box label=\"'+str(tmp2.dato.nombreCliente)+"\n"+str(tmp2.dato.dpiCliente)+"\n"
+                        while tmp3!=None:
+                            transa=tmp3.dato.ideTransaccionARealizar
+                            cantidad=tmp3.dato.nveces
+        
+                            cadena=cadena+' '+str(transa)+" Cantidad: "+str(cantidad)+"\n"
+                            tmp3=tmp3.sig
+                        cadena=cadena+'\"];\n'
+                        if(tmp2!=tmp.dato.FilaClientes.head):
+                            cadena = cadena + 'Node'+str(cont-1)+' -- '+'Node'+str(cont)+';\n'
+                        tmp2 = tmp2.sig
+                        cont+=1
+                    cadena = cadena + '}'
+                    file.write(cadena)
+                    file.close()
+                    os.system('dot -Tpng Cola.dot -o Cola.png')
+                    os.startfile("Cola.png")
+                    return
+                tmp=tmp.sig
+            tmp=tmp.sig       
 
-
-
-
-class Clientes():         #---------------------------------------------------------------TRATAR COMO COLA
+class Clientes(): 
 
     def __init__(self,dpiCliente,nombreCliente):
         self.dpiCliente=dpiCliente

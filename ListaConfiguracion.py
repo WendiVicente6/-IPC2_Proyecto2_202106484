@@ -150,11 +150,27 @@ class ListarObjetos:
                 
             tmp=tmp.next
         return None
+    def MostrarTransacciones(self,idempresa,idpunto):
+        tmp=self.first
+        
+        while tmp is not None:
+            if tmp.object.id.strip()==idempresa:
+                tmp2=tmp.object.transactions.first
+                
+                while tmp2 is not None:
+                    print("Id transacciones: ",tmp2.object.id, "Nombre Transacciones: ",tmp2.object.name)
+                    tmp2=tmp2.next
+                return
+            tmp=tmp.next
     def CalcularTiempoPromedio(self,empresa,listatrans):
         tmp=self.first
         contar=0
         contarespera=0
+        tiempopromedio=0
         tiempo=0
+        timpopromedioespera=0
+        minimoatencion=0
+        maximoatencion=0
         listatiempo=[]
 
         while tmp is not None:
