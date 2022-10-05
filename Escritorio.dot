@@ -1,0 +1,17 @@
+graph G { 
+Node0[dir=both shape=box label="K500
+ Arturito 
+"];
+Node1[dir=both shape=box label="SIUU
+ Bill Gates 
+"];
+Node0 -- Node1;
+Node2[dir=both shape=box label="K500
+ Dante 
+"];
+Node1 -- Node2;
+Node3[dir=both shape=box label="SIUU
+ Freddie Mercuri 
+"];
+Node2 -- Node3;
+}

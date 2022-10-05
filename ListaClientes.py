@@ -1,6 +1,7 @@
 from ast import Break, Return
 import os
 import string
+from typing import List
 from typing_extensions import Self
 
 
@@ -91,6 +92,22 @@ class Lista():
                     return
                 tmp=tmp.sig
             tmp=tmp.sig
+
+    def ClientesporEscritorio(self,idempresa,idpunto):
+        tmp=self.head
+        
+        while tmp is not None:
+            if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
+                if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
+                    tmp2=tmp.dato.ClienteEscritorio.head
+                    
+                    while tmp2 is not None:
+                        print("ESCRITORIO: ",tmp2.dato.ideEscritorioActivo, "Cliente: ",tmp2.dato.dpiclientes)
+                        
+                        tmp2=tmp2.sig
+                    return
+                tmp=tmp.sig
+            tmp=tmp.sig
     def ClientesFaltantes(self,idempresa,idpunto):
         tmp=self.head
         
@@ -177,6 +194,10 @@ class Lista():
                                 tmp2.head=tmp2.head.sig
                                 borrar=None
                                 print("El cliente: ",cliente," fue atendido en ",idescritorio)
+                                idconfig=self.getConfiguracion(idempresa,idpunto)
+                                clientes=ClientesEnEscritorio(idescritorio,cliente)                                
+                                idconfig.dato.ClienteEscritorio.AgregarFinal(clientes)
+                                
                                 break
                             else:
                                 print("Ya no hay clientes")
@@ -272,7 +293,39 @@ class Lista():
                     os.startfile("Cola.png")
                     return
                 tmp=tmp.sig
-            tmp=tmp.sig       
+            tmp=tmp.sig    
+    def graficarEscritorios(self,idempresa,idpunto):
+        tmp=self.head
+        cont = 0
+        cadena = ""
+        
+
+
+        while tmp is not None:
+            if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
+                if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
+                    tmp2=tmp.dato.ClienteEscritorio.head
+                    
+                    
+                    file = open('Escritorio.dot', 'w')
+                    cadena = cadena + 'graph G { \n'
+                    while tmp2 is not None:
+                        cadena = cadena + 'Node'+str(cont)+'[dir=both shape=box label=\"'+str(tmp2.dato.ideEscritorioActivo)+"\n"+str(tmp2.dato.dpiclientes)+"\n"
+                        
+                        cadena=cadena+'\"];\n'
+                        if(tmp2!=tmp.dato.ClienteEscritorio.head):
+                            cadena = cadena + 'Node'+str(cont-1)+' -- '+'Node'+str(cont)+';\n'
+                        tmp2 = tmp2.sig
+                        cont+=1
+                    cadena = cadena + '}'
+                    
+                    file.write(cadena)
+                    file.close()
+                    os.system('dot -Tpng Escritorio.dot -o Escritorio.png')
+                    os.startfile("Escritorio.png")
+                    return
+                tmp=tmp.sig
+            tmp=tmp.sig      
 
 class Clientes(): 
 
@@ -294,6 +347,7 @@ class Configuracion():
         self.codigoConfiguracion=codigoConfiguracion
         self.ideEmpresaConfiguracion=ideEmpresaConfiguracion
         self.idePuntoDEAtencionConfiguracion=idePuntoDEAtencionConfiguracion
+        self.ClienteEscritorio=Lista()
         self.EscritoriosActicos=Lista()
         self.FilaClientes=Lista()
 
@@ -301,3 +355,7 @@ class EscritorioActivo():
 
     def __init__(self,ideEscritorioActivo):
         self.ideEscritorioActivo=ideEscritorioActivo
+class ClientesEnEscritorio():
+    def __init__(self,ideEscritorioActivo,dpiclientes):
+        self.ideEscritorioActivo=ideEscritorioActivo
+        self.dpiclientes=dpiclientes

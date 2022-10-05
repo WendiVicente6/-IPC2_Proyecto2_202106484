@@ -252,7 +252,9 @@ def Menu():
 3. Limpiar Sistema
 4. Crear nueva empresa
 5. Realizar Operaciones
-6. Graficar
+6. ATENDIDOS
+7. Graficar
+8. Ver Clientes en Escritorio
 
 
         """)
@@ -310,6 +312,8 @@ def Menu():
             if atender=="S":
                 while atender!="N":
                     listaIniciaPrograma.Atender(empr.object.id,pun.object.id)
+                    transacciones=listaIniciaPrograma.CantidadTransacciones(empr.object.id,pun.object.id)
+                    listaconfi.CalcularTiempoPromedio(empr.object.id,transacciones)
                     listaIniciaPrograma.ClientesFaltantes(empr.object.id,pun.object.id)
 
                     atender=input("Desea Empezar a atender Clientes: (S/N) ")
@@ -322,14 +326,19 @@ def Menu():
                 
 
                 listaIniciaPrograma.ClientesFaltantes(empr.object.id,pun.object.id)
-
-
         elif opcion == '6':
+            listaIniciaPrograma.ClientesporEscritorio(empr.object.id,pun.object.id)
+
+        elif opcion == '7':
             idemmpresa=input("Ingrese ID de la empresa: ")
             idpunto=input("Ingrese punto de la empresa: ")
             listaIniciaPrograma.graficar(idemmpresa,idpunto)
+        elif opcion == '8':
+            idemmpresa=input("Ingrese ID de la empresa: ")
+            idpunto=input("Ingrese punto de la empresa: ")
+            listaIniciaPrograma.graficarEscritorios(idemmpresa,idpunto)
 
-        elif opcion != '7':
+        elif opcion != '9':
             print("Opcion incorrecta\n")
 
 if __name__ == '__main__':
