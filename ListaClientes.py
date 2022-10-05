@@ -1,4 +1,4 @@
-from ast import Return
+from ast import Break, Return
 import os
 import string
 from typing_extensions import Self
@@ -102,7 +102,9 @@ class Lista():
                     while tmp2 is not None:
                         print("Clientes: ",tmp2.dato.nombreCliente)
                         tmp2=tmp2.sig
+                    
                     return
+                
                 tmp=tmp.sig
             tmp=tmp.sig
 
@@ -166,12 +168,16 @@ class Lista():
                 if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
                     tmp2=tmp.dato.FilaClientes
                     while tmp2!=None:
-                        cliente=tmp2.head.dato.nombreCliente
-                        borrar=tmp2.head
-                        tmp2.head=tmp2.head.sig
-                        borrar=None
-                        print("El cliente: ",cliente," fue atendido")
-                        break
+                        if tmp2.head!=None:
+                            cliente=tmp2.head.dato.nombreCliente
+                            borrar=tmp2.head
+                            tmp2.head=tmp2.head.sig
+                            borrar=None
+                            print("El cliente: ",cliente," fue atendido")
+                            break
+                        else:
+                            print("Ya no hay clientes")
+                            break
                     return                 
                 tmp=tmp.sig
             tmp=tmp.sig

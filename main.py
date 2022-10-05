@@ -1,3 +1,4 @@
+from tkinter import N
 from turtle import pu
 import xml.etree.ElementTree as ET
 from ListaClientes import Clientes, Configuracion, EscritorioActivo, Lista, TransaccionesCliente
@@ -305,15 +306,16 @@ def Menu():
             if pregunta2=="S":
                 listaIniciaPrograma.DesactivarEscritorio(empr.object.id,pun.object.id)
                 listaIniciaPrograma.MostrarActivos(empr.object.id,pun.object.id)
-
-            #listaconfi.Show()
             atender=input("Desea Empezar a atender Clientes: (S/N) ")
             if atender=="S":
-                listaIniciaPrograma.Atender(empr.object.id,pun.object.id)
-                listaIniciaPrograma.ClientesFaltantes(empr.object.id,pun.object.id)
-            #ImprimePruebaDeSistema(listaIniciaPrograma)
+                while atender!="N":
+                    listaIniciaPrograma.Atender(empr.object.id,pun.object.id)
+                    listaIniciaPrograma.ClientesFaltantes(empr.object.id,pun.object.id)
+                    atender=input("Desea Empezar a atender Clientes: (S/N) ")
+
             solicitud=input("Desea ingresar un nuevo cliente: (S/N) ")
             if solicitud=="S":
+                
                 listaconfi.MostrarTransacciones(empr.object.id,pun.object.id)
                 listaIniciaPrograma.MeterCliente(empr.object.id,pun.object.id)
                 listaIniciaPrograma.ClientesFaltantes(empr.object.id,pun.object.id)
