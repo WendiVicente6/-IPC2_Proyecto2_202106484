@@ -166,18 +166,27 @@ class Lista():
         while tmp is not None:
             if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
                 if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
-                    tmp2=tmp.dato.FilaClientes
-                    while tmp2!=None:
-                        if tmp2.head!=None:
-                            cliente=tmp2.head.dato.nombreCliente
-                            borrar=tmp2.head
-                            tmp2.head=tmp2.head.sig
-                            borrar=None
-                            print("El cliente: ",cliente," fue atendido")
-                            break
-                        else:
-                            print("Ya no hay clientes")
-                            break
+                    tmp3=tmp.dato.EscritoriosActicos
+                    while tmp3!=None:
+                        idescritorio=tmp3.head.dato.ideEscritorioActivo
+                        tmp2=tmp.dato.FilaClientes
+                        while tmp2!=None:
+                            if tmp2.head!=None:
+                                cliente=tmp2.head.dato.nombreCliente
+                                borrar=tmp2.head
+                                tmp2.head=tmp2.head.sig
+                                borrar=None
+                                print("El cliente: ",cliente," fue atendido en ",idescritorio)
+                                break
+                            else:
+                                print("Ya no hay clientes")
+                                return
+                        tmp3.head=tmp3.head.sig
+                        idconfig=self.getConfiguracion(idempresa,idpunto)
+                        tempEscritoriosActivos=EscritorioActivo(idescritorio)
+                        idconfig.dato.EscritoriosActicos.AgregarFinal(tempEscritoriosActivos)
+                        return
+                                
                     return                 
                 tmp=tmp.sig
             tmp=tmp.sig
@@ -230,12 +239,17 @@ class Lista():
         cont = 0
         cadena = ""
         
+
+
         while tmp is not None:
             if tmp.dato.ideEmpresaConfiguracion.strip()==idempresa:
                 if tmp.dato.idePuntoDEAtencionConfiguracion.strip()==idpunto:
                     tmp2=tmp.dato.FilaClientes.head
+                    tmp4=tmp.dato.EscritoriosActicos.head
+                    
+                    
                     file = open('Cola.dot', 'w')
-                    cadena = cadena + 'graph G { \n'
+                    cadena = cadena + 'digraph G { \n'
                     while tmp2 is not None:
                         tmp3=tmp2.dato.transaccionesARealizar.head
                         cadena = cadena + 'Node'+str(cont)+'[dir=both shape=box label=\"'+str(tmp2.dato.nombreCliente)+"\n"+str(tmp2.dato.dpiCliente)+"\n"
@@ -247,10 +261,11 @@ class Lista():
                             tmp3=tmp3.sig
                         cadena=cadena+'\"];\n'
                         if(tmp2!=tmp.dato.FilaClientes.head):
-                            cadena = cadena + 'Node'+str(cont-1)+' -- '+'Node'+str(cont)+';\n'
+                            cadena = cadena + 'Node'+str(cont-1)+' -> '+'Node'+str(cont)+';\n'
                         tmp2 = tmp2.sig
                         cont+=1
                     cadena = cadena + '}'
+                    
                     file.write(cadena)
                     file.close()
                     os.system('dot -Tpng Cola.dot -o Cola.png')

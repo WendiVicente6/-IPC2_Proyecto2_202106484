@@ -252,7 +252,7 @@ def Menu():
 3. Limpiar Sistema
 4. Crear nueva empresa
 5. Realizar Operaciones
-6. Graficara 1
+6. Graficar
 
 
         """)
@@ -311,6 +311,7 @@ def Menu():
                 while atender!="N":
                     listaIniciaPrograma.Atender(empr.object.id,pun.object.id)
                     listaIniciaPrograma.ClientesFaltantes(empr.object.id,pun.object.id)
+
                     atender=input("Desea Empezar a atender Clientes: (S/N) ")
 
             solicitud=input("Desea ingresar un nuevo cliente: (S/N) ")
@@ -318,6 +319,8 @@ def Menu():
                 
                 listaconfi.MostrarTransacciones(empr.object.id,pun.object.id)
                 listaIniciaPrograma.MeterCliente(empr.object.id,pun.object.id)
+                
+
                 listaIniciaPrograma.ClientesFaltantes(empr.object.id,pun.object.id)
 
 

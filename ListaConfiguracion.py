@@ -99,8 +99,6 @@ class ListarObjetos:
         tmp=self.first
         contar=0
 
-        
-        
         while tmp is not None:
             if tmp.object.id.strip()==empresa:
                 tmp2=tmp.object.service_points.first
@@ -122,6 +120,7 @@ class ListarObjetos:
                 
             tmp=tmp.next
         return None
+               
     def DesactivarEscritorio(self,empresa,punto,listactivos,idescritorio):
         tmp=self.first
         contar=0
@@ -199,14 +198,10 @@ class ListarObjetos:
                 print("Tiempo minimo de Espera: ",minimoatencion, " minutos")
                 print("Tiempo maximo de atención: ",maximoatencion," minutos")
                 print("Tiempo Minimo de atención: ",minimoatencion," minutos")          
-     
-             
+                 
             tmp=tmp.next
         return None
-
-
-
-    
+   
     def Show(self):
         temporal = self.first;
         if (self.size != 0):
