@@ -45,41 +45,41 @@ def LeerXmlPruebas(file,listaIniciaPrograma):
     ImprimePruebaDeSistema(listaIniciaPrograma)
 
 def ImprimePruebaDeSistema(listaIniciaPrograma):
-
-    temp1=listaIniciaPrograma.head
-    print("????????????????????????????????????????????????????????????????????????????????????")
-    while temp1 != None:
-        print("----------------------------CONFIGURACIÓN--------------------------------")
-        print('CODIGO: ',temp1.dato.codigoConfiguracion)
-        print('ID EMPRESA: ',temp1.dato.ideEmpresaConfiguracion)
-        print('ID ATENCION: ',temp1.dato.idePuntoDEAtencionConfiguracion)
-        lEsciroeiosA=temp1.dato.EscritoriosActicos
-        temp2=lEsciroeiosA.head
-        print("         Escritorios Activos------------------------")        
-        while temp2!=None:
-            
-            print('         ID: ',temp2.dato.ideEscritorioActivo)
-            lC=temp1.dato.FilaClientes
-            temp3=lC.head
-            temp2=temp2.sig
-        
-        while temp3!=None:
-            print("         CLIENTE--------------------------------")
-            print('             DPI: ',temp3.dato.dpiCliente)
-            print('             NOMBRE: ',temp3.dato.nombreCliente)
-
-            
-            ltR=temp3.dato.transaccionesARealizar
-            temp4=ltR.head
-           
-            print("             TRANSACCIONES DEL CLIENTE-----------------------------")
-            while temp4!=None:
+    if listaIniciaPrograma!=False:
+        temp1=listaIniciaPrograma.head
+        print("????????????????????????????????????????????????????????????????????????????????????")
+        while temp1 != None:
+            print("----------------------------CONFIGURACIÓN--------------------------------")
+            print('CODIGO: ',temp1.dato.codigoConfiguracion)
+            print('ID EMPRESA: ',temp1.dato.ideEmpresaConfiguracion)
+            print('ID ATENCION: ',temp1.dato.idePuntoDEAtencionConfiguracion)
+            lEsciroeiosA=temp1.dato.EscritoriosActicos
+            temp2=lEsciroeiosA.head
+            print("         Escritorios Activos------------------------")        
+            while temp2!=None:
                 
+                print('         ID: ',temp2.dato.ideEscritorioActivo)
+                lC=temp1.dato.FilaClientes
+                temp3=lC.head
+                temp2=temp2.sig
+            
+            while temp3!=None:
+                print("         CLIENTE--------------------------------")
+                print('             DPI: ',temp3.dato.dpiCliente)
+                print('             NOMBRE: ',temp3.dato.nombreCliente)
 
-                print('             ID TRANSACCION: ',temp4.dato.ideTransaccionARealizar,'  A REALIZAR : ' ,temp4.dato.nveces,'  VECES')
-                temp4=temp4.sig   
-            temp3=temp3.sig    
-            temp1=temp1.sig   
+                
+                ltR=temp3.dato.transaccionesARealizar
+                temp4=ltR.head
+            
+                print("             TRANSACCIONES DEL CLIENTE-----------------------------")
+                while temp4!=None:
+                    
+
+                    print('             ID TRANSACCION: ',temp4.dato.ideTransaccionARealizar,'  A REALIZAR : ' ,temp4.dato.nveces,'  VECES')
+                    temp4=temp4.sig   
+                temp3=temp3.sig    
+                temp1=temp1.sig   
 
 
 def CargarArchivoConfiguracion(file, xmlconfiguracion):
@@ -274,6 +274,8 @@ def Menu():
             
         elif opcion == '3':
             listaconfi.Eliminar()
+            listaIniciaPrograma.EliminarDatos()
+            ImprimePruebaDeSistema(listaIniciaPrograma==None)
             listaconfi.Show()
         elif opcion == '4':
             listaconfi.Insert_End(Return_Company_individual())

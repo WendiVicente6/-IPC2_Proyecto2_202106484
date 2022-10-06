@@ -1,4 +1,5 @@
 from itertools import tee
+import re
 
 from ListaClientes import Lista
 
@@ -53,8 +54,15 @@ class ListarObjetos:
             self.last = nuevo;
         self.size +=1;
     def Eliminar(self):
-        self.first=None
-        self.last=None
+        tmp=self.first
+        while tmp!=None:
+            borrar=tmp
+            tmp=tmp.next
+            borrar=None
+            self.size-=1
+        #print("Ha sido borrados los datos de configuración ")
+        
+
     def getEmpresa(self,empresa,punto):
         tmp=self.first
         
@@ -205,10 +213,10 @@ class ListarObjetos:
     def Show(self):
         temporal = self.first;
         if (self.size != 0):
-            if(temporal==None):
-                print("No hay datos")
+            if temporal==None:
+                return
             
-            elif (type(temporal.object) == Company):
+            if (type(temporal.object) == Company):
                 print("EMPRESA"+"="*65);
                 while (temporal != None):
                     print("|{:<10}|{:<30}|{:<30}|".format(temporal.object.id,temporal.object.name,temporal.object.abbreviation));
@@ -234,8 +242,9 @@ class ListarObjetos:
                 while(temporal != None):
                     print("     |{:<10}|{:<30}|{:<30}|".format(temporal.object.id,temporal.object.name,temporal.object.time));
                     temporal = temporal.next;
+
                     
         else:
-            print("="*20+" No se cuentan con Datos "+"="*20);
+            print("="*20+" No se cuentan con Datos de Sistema"+"="*20);
             
 Empresas_Lista = ListarObjetos();

@@ -26,24 +26,13 @@ class Lista():
         while actual.sig:
             actual=actual.sig 
         actual.sig =Nodo(dato=dato)
-    
-    def RetornaUltimoNodo(self):
-        temporal=self.head 
-        while(temporal.sig is not None):
-            temporal=temporal.sig 
-        return temporal.dato
-
-    def ImprimirLista(self,especifico):
-        nodo = self.head
-        while nodo != None:
-            print(getattr(nodo.dato,especifico))
-            nodo = nodo.sig
-
-    def ParaSeleccionar(self,especifico1,especifico2):
-        nodo = self.head
-        while nodo != None:
-            print(getattr(nodo.dato,especifico1),getattr(nodo.dato,especifico2))
-            nodo = nodo.sig
+    def EliminarDatos(self):
+        tmp=self.head
+        while tmp!=None:
+            borrar=tmp
+            tmp=tmp.sig
+            borrar=None
+        print("==================== No se cuentan con Datos iniciales==================== ")
   
     def Limpiar(self):
         self.head=None
